@@ -1,0 +1,51 @@
+* Command Structure
+  * ads: Add single photo to gallery
+  * rms: Remove single photo from gallery
+  * display: Display photo
+  * stats: Display statistics about gallery
+  * event: Handles events
+    * new: Create a new event
+    * add: Add an existing gallery photo to a single event
+    * rm: Remove event
+* File Storage
+  .sic in HOME by default
+  
+  * data/
+    * <sha1>
+      * <sha1>
+        ... but sha1 of what? It will change if
+        the exif info change or if metadata is written
+        to file. 
+         It should be sha1 of the pixel information
+         on screen (after stripping everything that
+         doesn't encode image information).
+      
+         I think we can convert the image to pgm which
+         seems to be the canonical image format,
+         store the image in its original format but with the
+         sha calculated from the pgm.
+      
+         All sic generated images (thumbs) should
+         be stored in lossless png.
+      * <width>x<height>.png
+        thumbs of several sizes.
+      * _<prop name>
+        file contains prop value associated
+	with prop name.
+  * events/
+    * <name>
+      File contains list of sha, of files inside event
+    * _<prop name>
+      file contains prop value associated
+      with prop name.
+  * tags/
+    What's the difference between events and tags?
+    Is it just semantic (no differences in data storage)?
+  * opts
+    File of the form
+    [group1]
+    name1:value1
+    name2:value2
+    [group2]
+    name1:value1
+    name2:value2
