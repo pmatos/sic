@@ -10,7 +10,8 @@
 # * convert (imagemagick)
 # * sha1sum
 
-DATADIR=$HOME/.sic/data
+source common.sh
+
 mkdir -p $DATADIR
 
 VERB=0
