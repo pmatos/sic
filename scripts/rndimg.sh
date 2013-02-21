@@ -8,7 +8,7 @@ WIDTH=${1}
 HEIGHT=${2}
 OUTPUT=${3}
 
-PPM=$(tempfile).ppm
+PPM=/tmp/rndimg-${RANDOM}.ppm
 
 # Create ppm
 echo "P3" > $PPM
@@ -29,3 +29,6 @@ done
 
 # Convert to output
 convert $PPM $OUTPUT
+
+# delete tempfile
+rm -f $PPM
