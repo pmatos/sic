@@ -3,3 +3,5 @@
 #
 SICHOME=$HOME/.sic/
 DATADIR=$HOME/.sic/data
+
+REMFILE=$SICHOME/removed

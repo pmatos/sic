@@ -5,7 +5,6 @@
 
 source common.sh
 
-REMFILE=$SICHOME/removed
 SHA=$1
 
 if [ ! -d $DATADIR/$SHA ]; then
