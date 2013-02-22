@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 int
 main (int argc, char *argv[])
@@ -15,6 +16,10 @@ main (int argc, char *argv[])
   unsigned int i, j;
 
   FILE *ppmf = fopen (ppm, "w");
+
+  struct timeval tv;
+  gettimeofday (&tv, NULL);
+  srand ((unsigned int) (tv.tv_sec ^ tv.tv_usec));
 
   if (!ppmf)
     return 1;
