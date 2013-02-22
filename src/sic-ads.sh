@@ -15,12 +15,16 @@ source common.sh
 mkdir -p $DATADIR
 
 VERB=0
+FORCE=0
 
-while getopts ":v" opt; do
+while getopts ":vf" opt; do
     case $opt in
 	v)
 	    VERB=1
 	    ;;
+        f)
+            FORCE=1
+            ;;
 	\?)
 	    echo "Invalid option to ads: -$OPTARG" >&2
 	    exit 1
@@ -42,12 +46,25 @@ convert $FILE $TMPFILE
 SHA=$(sha1sum $TMPFILE | cut -d ' ' -f 1)
 rm -f $TMPFILE
 
+# Check if image exists
 if [ -d $DATADIR/$SHA ]; then
     echo "Image already exists in database."
     echo "use"
     echo "  sic display $SHA"
     echo "to view image"
     exit
+fi
+
+# Check if image was removed in the past
+if [ -f $REMFILE ] && grep -q $SHA $REMFILE; then
+    if (( FORCE == 0 )); then
+        echo "Image has been in database once and later removed."
+        echo "use"
+        echo "  sic ads -f $SHA"
+        echo "to re-add the image"
+        exit
+    fi
+    sed -i "/$SHA/d" $REMFILE
 fi
 
 # create directory
