@@ -12,6 +12,9 @@
 
 source common.sh
 
+# Timing info
+TSTART="$(date +%s)"
+
 mkdir -p $DATADIR
 
 VERB=0
@@ -52,7 +55,7 @@ if [ -d $DATADIR/$SHA ]; then
     echo "use"
     echo "  sic display $SHA"
     echo "to view image"
-    exit
+    exit 1
 fi
 
 # Check if image was removed in the past
@@ -62,7 +65,7 @@ if [ -f $REMFILE ] && grep -q $SHA $REMFILE; then
         echo "use"
         echo "  sic ads -f $SHA"
         echo "to re-add the image"
-        exit
+        exit 1
     fi
     sed -i "/$SHA/d" $REMFILE
 fi
@@ -80,5 +83,6 @@ echo $(whoami) > $DATADIR/$SHA/_sic-author
 echo $(hostname) > $DATADIR/$SHA/_sic-hostname
 echo $(date) > $DATADIR/$SHA/_sic-date
 
-echo "image $SHA added to gallery successfully."
+TEND="$(date +%s)"
+echo "image $SHA added [$((TEND-TSTART))sec]"
 exit
