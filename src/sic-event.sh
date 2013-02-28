@@ -45,3 +45,11 @@ if (( $HELP == 1 )); then
     echo "HELP"
 fi
 
+COMMAND=$1
+
+if (( $COMMAND == "new" )); then
+    # Create a new event.
+    # This should be a simple touch.
+    EVENTNAME=$2
+
+    if [ !-f "
