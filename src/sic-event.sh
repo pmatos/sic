@@ -16,10 +16,47 @@ HELP=0
 VERBOSE=""
 DEL=0
 
+# Given an event name it returns the path to the event directory
+event_path ()
+{
+    EVNAME=$1
+    return $SICHOME/events/$1
+}
+
+event_exists_p ()
+{
+    EVNAME=$1
+    
+    event_path $EVNAME
+    EVPATH=$?
+
+    if [ -d $EVPATH ]; then
+	return 0
+    else
+	return 1
+    fi
+}
+
+# Create a new event.
+# This should be a simple touch.
+event_new ()
+{
+    EVNAME=$1
+    
+    if (( $(event_exists_p $EVNAME) == 1 )); then
+	echo "Event $EVNAME already exists"
+	exit 1
+    fi
+    
+    touch $(event_path $EVNAME)
+    echo "Event $EVNAME created"
+    exit 0
+}
+
 # Available commands
 # new: create new event
-# add: add photo to event
-# rm: delete photo from event
+# ads: add photo to event
+# rms: delete photo from event
 # -d: delete event
 
 while getopts ":hvd" opt; do
@@ -45,11 +82,32 @@ if (( $HELP == 1 )); then
     echo "HELP"
 fi
 
+if (( $DEL == 1)); then
+    EVNAME=$1
+    
+    if (( !$(event_exists_p $EVNAME) )); then
+	echo "Event $EVNAME does not exist"
+	exit 1
+    fi
+
+    rm -Rf $(event_path $EVNAME)
+    echo "Event $EVNAME deleted"
+    exit 0
+fi
+
 COMMAND=$1
 
 if (( $COMMAND == "new" )); then
-    # Create a new event.
-    # This should be a simple touch.
-    EVENTNAME=$2
+    event_new $2
+elif (( $COMMAND == "ads" )); then
+    event_ads $2 $3
+elif (( $COMMAND == "rms" )); then
+    event_rms $2 $3
+else
+    echo "Unknown command: $COMMAND"
+    exit 1
+fi
 
-    if [ !-f "
+exit 0
+    
+    
