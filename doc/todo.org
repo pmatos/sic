@@ -49,3 +49,15 @@
     [group2]
     name1:value1
     name2:value2
+* Workflow
+  * User takes photos/videos;
+  * Comes back home with a camera full of photos/videos;
+  * Inserts card into slot which is automatically detected
+    as a drive in the user's PC;
+  * User wants to add media to sic:
+    sic add /media/mycam
+    and all photos/videos which are not duplicates are
+    added to webcam
+  * User wants to view media just imported:
+    sic display latest
+    
